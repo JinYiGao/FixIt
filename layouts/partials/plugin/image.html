@@ -33,7 +33,7 @@
 {{- $alt := .Alt | default $src -}}
 {{- $caption := .Caption | default $alt -}}
 {{- $loading := resources.Get "svg/loading.svg" | minify -}}
-{{- if .Linked -}}
+{{- if .lightgallery -}}
   <a class="lightgallery" href="{{ $large | safeURL }}" data-thumbnail="{{ $small | safeURL }}"{{ with $caption }} data-sub-html="<h2>{{ . }}</h2>{{ with $.Title }}<p>{{ . }}</p>{{ end }}"{{ end }}{{ with .Rel }} rel="{{ . }}"{{ end }}>
     <img
       class="lazyload{{ with .Class }} {{ . }}{{ end }}"
