@@ -6,14 +6,18 @@
   <div class="page archive">
     <div class="header">
       {{- /* Title */ -}}
+      {{- /* Editor:Jin 先将hidden为false的pages提取出来 */ -}}
+      {{- $pages := where .Pages "Params.hidden" "!=" true -}}
       <h1 class="single-title animate__animated animate__pulse animate__faster">
         {{- .Params.Title | default (T .Section) | default .Section | dict "Some" | T "allSome" }}
-        <sup>{{- len .Pages -}}</sup>
+        <sup>{{- len $pages -}}</sup>
+        {{- /* Editor:Jin <sup>{{- len .Pages -}}</sup> */ -}}
       </h1>
       {{- /* Total word count */ -}}
       {{- /* See https://github.com/hugo-fixit/FixIt/issues/124 */ -}}
       {{- $localData := newScratch -}}
-      {{- range .Pages -}}
+      {{- /* Editor:Jin range $pages */ -}}
+      {{- range $pages -}}
         {{- $localData.Add "totalWordCount" .WordCount -}}
       {{- end -}}
       {{- with ($localData.Get "totalWordCount") -}}
@@ -29,7 +33,10 @@
 
     {{- /* Paginate */ -}}
     {{- if .Pages -}}
-      {{- $pages := .Pages.GroupByDate "2006" -}}
+      {{- /* Editor:Jin 先将hidden为false的pages提取出来, 再按照时间分组 */ -}}
+      {{- $pages := where .Pages "Params.hidden" "!=" true -}}
+
+      {{- $pages := $pages.GroupByDate "2006" -}}
       {{- with .Site.Params.section.paginate | default .Site.Params.paginate -}}
         {{- $pages = $.Paginate $pages . -}}
       {{- else -}}
